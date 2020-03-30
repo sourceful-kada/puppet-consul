@@ -25,6 +25,7 @@ class consul::config (
   Boolean $enable_beta_ui              = $consul::enable_beta_ui,
   Boolean $allow_binding_to_root_ports = $consul::allow_binding_to_root_ports,
   Boolean $restart_on_change           = $consul::restart_on_change,
+  Optional[Sensitive] $config_var_encrypt     = $consul::config_var_encrypt,
 ) {
 
   $notify_service = $restart_on_change ? {
@@ -129,7 +130,7 @@ class consul::config (
     owner   => $consul::user_real,
     group   => $consul::group_real,
     mode    => $consul::config_mode,
-    content => consul::sorted_json($config_hash, $consul::pretty_config, $consul::pretty_config_indent),
+    content => consul::sorted_json($config_hash + {'encrypt' => $config_var_encrypt.unwrap}, $consul::pretty_config, $consul::pretty_config_indent).node_encrypt::secret
   }
 
 }
