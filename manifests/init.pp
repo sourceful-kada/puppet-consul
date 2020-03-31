@@ -229,7 +229,7 @@ class consul (
   Optional[String[1]]                   $shell                       = $consul::params::shell,
   Boolean                               $enable_beta_ui              = false,
   Boolean                               $allow_binding_to_root_ports = false,
-  Optional[Sensitive]                   $config_var_encrypt          = Undef,
+  Optional[Sensitive[Hash]]             $config_hash_sensitive       = Sensitive({}),
 ) inherits consul::params {
 
   $real_download_url = pick(

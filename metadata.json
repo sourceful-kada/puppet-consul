@@ -1,8 +1,8 @@
 {
   "name": "KyleAnderson-consul",
-  "version": "6.0.1",
+  "version": "16.0.1",
   "author": "Kyle Anderson <kyle@xkyle.com>",
-  "summary": "Configures Consul by Hashicorp",
+  "summary": "Configures Consul by Hashicorp + Sensitive & node_encrypt patch",
   "license": "Apache-2.0",
   "source": "https://github.com/solarkennedy/puppet-consul",
   "project_page": "https://github.com/solarkennedy/puppet-consul",
@@ -19,6 +19,10 @@
     {
       "name": "camptocamp/systemd",
       "version_requirement": ">= 1.1.1 < 3.0.0"
+    },
+    {
+      "name": "binford2k/node_encrypt",
+      "version_requirement": ">= 0.4.1"
     }
   ],
   "operatingsystem_support": [

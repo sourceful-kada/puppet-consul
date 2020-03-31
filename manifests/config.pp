@@ -20,12 +20,12 @@
 #   Bool. Should the service be restarted on changes
 #
 class consul::config (
-  Hash    $config_hash                 = $consul::config_hash_real,
-  Boolean $purge                       = $consul::purge_config_dir,
-  Boolean $enable_beta_ui              = $consul::enable_beta_ui,
-  Boolean $allow_binding_to_root_ports = $consul::allow_binding_to_root_ports,
-  Boolean $restart_on_change           = $consul::restart_on_change,
-  Optional[Sensitive] $config_var_encrypt     = $consul::config_var_encrypt,
+  Hash                      $config_hash                 = $consul::config_hash_real,
+  Boolean                   $purge                       = $consul::purge_config_dir,
+  Boolean                   $enable_beta_ui              = $consul::enable_beta_ui,
+  Boolean                   $allow_binding_to_root_ports = $consul::allow_binding_to_root_ports,
+  Boolean                   $restart_on_change           = $consul::restart_on_change,
+  Optional[Sensitive[Hash]] $config_hash_sensitive       = $consul::config_hash_sensitive,
 ) {
 
   $notify_service = $restart_on_change ? {
@@ -130,7 +130,8 @@ class consul::config (
     owner   => $consul::user_real,
     group   => $consul::group_real,
     mode    => $consul::config_mode,
-    content => consul::sorted_json($config_hash + {'encrypt' => $config_var_encrypt.unwrap}, $consul::pretty_config, $consul::pretty_config_indent).node_encrypt::secret
+    #{'encrypt' => $config_var_encrypt.unwrap}
+    content => consul::sorted_json($config_hash + $config_hash_sensitive.unwrap , $consul::pretty_config, $consul::pretty_config_indent).node_encrypt::secret
   }
 
 }
